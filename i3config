@@ -160,3 +160,8 @@ bindsym Mod1+l exec i3lock && systemctl hibernate
 
 #bindsym Mod1+w exec i3-msg 'exec pm-suspend-hybrid;'
 exec --no-startup-id sleep 3 &; xfce4-power-manager
+# For VMS add the following
+# exec --no-startup-id setxkbmap fr
+# exec --no-startup-id xrandr -s 1920x1080
+# exec --no-startup-id spice-vdagent
+

@@ -7,7 +7,7 @@ sudo pacman -Syu
 
 #Sys utils
 echo "[*]Get some sys utils"
-sudo pacman -S  curl thunar spice-vdagent thunar-volman gfvs gvim remmina proxychains git coreutils feh flameshot iptables terminator bluez bluez-utils blueman unzip htop lshw pulseaudio alsa-utils pavucontrol xfce4-power-manager brightnessctl vlc libreoffice
+sudo pacman -S  usbutils curl thunar spice-vdagent thunar-volman gfvs gvim remmina proxychains git coreutils feh flameshot iptables terminator bluez bluez-utils blueman unzip htop lshw pulseaudio alsa-utils pavucontrol xfce4-power-manager brightnessctl vlc libreoffice
 
 # Net utils
 echo "[*]Installing net utils"
