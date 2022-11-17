@@ -32,5 +32,9 @@ if [ ! -f "/home/krusty/repo/arch_scripts/terminator.config" ]
 		cp "/home/krusty/repo/arch_scripts/terminator.config" "/home/krusty/.config/terminator/config"
 fi
 
+# Configuring i3 to start with x11
+touch /home/krusty/.xinitrc
+echo "exec i3" >> /home/krusty/.xinitrc
+
 # Start display manager
 startx
