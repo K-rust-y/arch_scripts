@@ -13,20 +13,20 @@ sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O 
 
 # Copying i3 config
 echo "[*]Copying i3config"
-if [ ! -f "/home/krusty/repo/arch_config/i3config" ]
+if [ ! -f "/home/krusty/repo/arch_scripts/i3config" ]
 	then 
 		echo "[*]No updating cause i3config not found"
 	else
-		cp "/home/krusty/repo/arch_config/i3config" "/home/krusty/.config/i3/config"
+		cp "/home/krusty/repo/arch_scripts/i3config" "/home/krusty/.config/i3/config"
 fi
 
 # Copying terminator config
 echo "[*]Copying terminator config"
-if [ ! -f "/home/krusty/repo/arch_config/terminator.config" ]
+if [ ! -f "/home/krusty/repo/arch_scripts/terminator.config" ]
 	then 
 		echo "[*]No updating cause terminator.config not found"
 	else
-		cp "/home/krusty/repo/arch_config/terminator.config" "/home/krusty/.config/terminator/config"
+		cp "/home/krusty/repo/arch_scripts/terminator.config" "/home/krusty/.config/terminator/config"
 fi
 
 # Start display manager

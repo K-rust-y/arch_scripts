@@ -18,11 +18,11 @@ sudo systemctl enable bluetooth
 echo "[*]Updating vim.rc"
 if [ ! -f "/home/krusty/.vimrc" ]
 	then 
-		if [ ! -f "/home/krusty/repo/arch_config/.vimrc" ]
+		if [ ! -f "/home/krusty/repo/arch_scripts/.vimrc" ]
 			then 
 				echo "[*]No updating cause .vimrc not found anywhere"
 			else
-				cp "/home/krusty/repo/arch_config/.vimrc" "/home/krusty/.vimrc"
+				cp "/home/krusty/repo/arch_scripts/.vimrc" "/home/krusty/.vimrc"
 				update_vimrc
 		fi
 	else
