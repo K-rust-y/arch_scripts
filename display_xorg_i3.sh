@@ -17,6 +17,8 @@ if [ ! -f "/home/krusty/repo/arch_scripts/i3config" ]
 	then 
 		echo "[*]No updating cause i3config not found"
 	else
+		mkdir "/home/krusty/.config"
+		mkdir "/home/krusty/.config/i3"
 		cp "/home/krusty/repo/arch_scripts/i3config" "/home/krusty/.config/i3/config"
 fi
 
@@ -26,6 +28,7 @@ if [ ! -f "/home/krusty/repo/arch_scripts/terminator.config" ]
 	then 
 		echo "[*]No updating cause terminator.config not found"
 	else
+		mkdir "/home/krusty/.config/terminator"
 		cp "/home/krusty/repo/arch_scripts/terminator.config" "/home/krusty/.config/terminator/config"
 fi
 
