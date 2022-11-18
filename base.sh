@@ -11,6 +11,7 @@ sudo pacman -S  usbutils curl thunar spice-vdagent thunar-volman gvfs gvim remmi
 
 # Setting up locales
 localectl set-keymap --no-convert fr-latin1
+timedatectl set-timezone Europe/Paris
 
 # Net utils
 echo "[*]Installing net utils"
