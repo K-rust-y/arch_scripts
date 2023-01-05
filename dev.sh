@@ -11,6 +11,6 @@ read -p "[*]Getting python, y/n?" yn
 ## Rust
 read -p "[*]Getting rust? y/n" yn
 	case $yn in 
-		y) curl https://sh.rustup.rs -sSf | sh; sudo pacman -S libssl-dev pkg-config libclang-dev; export PATH=$PATH:/home/cargo/bin; source $HOME/.cargo/env; rustup component add rustfmt;;
+		y) curl https://sh.rustup.rs -sSf | sh; sudo pacman -S libssl-dev pkg-config clang; export PATH=$PATH:/home/cargo/bin; source $HOME/.cargo/env; rustup component add rustfmt;;
 		* ) echo "Not installed";;
 	esac
