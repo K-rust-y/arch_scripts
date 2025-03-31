@@ -71,3 +71,6 @@ if exists('+termguicolors')
   set termguicolors
 endif
 
+" For autocompletion see https://github.com/neoclide/coc.nvim. See also
+" jedi-vim or youcompleteme, but coc is better.
+
