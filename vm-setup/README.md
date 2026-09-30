@@ -18,7 +18,8 @@ What it does (safe to re-run):
   checksum-verified, in `/usr/local/bin/tree-sitter`
 - **Share:** virtiofs tag `host` mounted on `~/host_shared` (fstab, `nofail`)
 - **User config:** i3 config, LazyVim config + lockfile, monitors.xml, GNOME Terminal profile,
-  JetBrainsMono Nerd Font, Rust stable + rust-src + rust-analyzer
+  JetBrainsMono Nerd Font (skipped if installed; reuses a local `JetBrainsMono.zip` found next to
+  the script, in Downloads or in `~/host_shared` before downloading), Rust stable + rust-src + rust-analyzer
 
 ## Updating the dotfiles
 Copy changed configs back into `dotfiles/`:

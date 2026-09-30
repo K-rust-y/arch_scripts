@@ -140,15 +140,30 @@ user_setup() {
   cp -rT "$HERE/dotfiles/nvim" "$HOME/.config/nvim"
 
   log "Installing JetBrainsMono Nerd Font"
-  if ! fc-list | grep -qi "JetBrainsMono Nerd Font"; then
-    local tmp
-    tmp="$(mktemp -d)"
-    curl -fL -o "$tmp/font.zip" \
-      https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+  if fc-list | grep -qi "JetBrainsMono Nerd Font"; then
+    echo "   already installed"
+  else
+    # Reuse a JetBrainsMono.zip already on the machine before downloading one
+    local zip="" f tmp=""
+    for f in "$HERE/JetBrainsMono.zip" \
+             "$(xdg-user-dir DOWNLOAD 2>/dev/null || echo "$HOME/Downloads")/JetBrainsMono.zip" \
+             "$HOME/host_shared/JetBrainsMono.zip"; do
+      if [[ -f $f ]] && unzip -tq "$f" >/dev/null 2>&1; then
+        zip=$f
+        echo "   using $zip"
+        break
+      fi
+    done
+    if [[ -z $zip ]]; then
+      tmp="$(mktemp -d)"
+      zip="$tmp/JetBrainsMono.zip"
+      curl -fL -o "$zip" \
+        https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
+    fi
     mkdir -p "$HOME/.local/share/fonts"
-    unzip -oq "$tmp/font.zip" -d "$HOME/.local/share/fonts"
+    unzip -oq "$zip" -d "$HOME/.local/share/fonts"
     fc-cache -f >/dev/null
-    rm -rf "$tmp"
+    [[ -z $tmp ]] || rm -rf "$tmp"
   fi
 
   log "Loading GNOME Terminal profile"
