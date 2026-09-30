@@ -1,0 +1,10 @@
+[legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+audible-bell=false
+background-color='rgb(23,20,33)'
+cell-height-scale=1.0
+cell-width-scale=1.0
+font='JetBrainsMono Nerd Font 10'
+foreground-color='rgb(208,207,204)'
+scrollback-unlimited=true
+use-system-font=false
+use-theme-colors=false
