@@ -14,9 +14,11 @@ What it does (safe to re-run):
 - **sudo:** adds you to the `sudo` group (stock sudoers, password required)
 - **Neovim:** from apt if its version is ≥ 0.11 (LazyVim minimum), otherwise the latest stable
   release from GitHub, checksum-verified, in `/opt/nvim-linux-x86_64` + `/usr/local/bin/nvim`
+- **tree-sitter CLI:** latest release (≥ 0.26.1, needed by nvim-treesitter; Debian's is too old),
+  checksum-verified, in `/usr/local/bin/tree-sitter`
 - **Share:** virtiofs tag `host` mounted on `~/host_shared` (fstab, `nofail`)
 - **User config:** i3 config, LazyVim config + lockfile, monitors.xml, GNOME Terminal profile,
-  JetBrainsMono Nerd Font, Rust stable + rust-src + rust-analyzer, `~/Repo` clones, Claude Code
+  JetBrainsMono Nerd Font, Rust stable + rust-src + rust-analyzer
 
 ## Updating the dotfiles
 Copy changed configs back into `dotfiles/`:

@@ -9,14 +9,12 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NVIM_MIN_VERSION="0.11"                 # minimum required by LazyVim
 NVIM_DIR="/opt/nvim-linux-x86_64"
 NVIM_RELEASE_API="https://api.github.com/repos/neovim/neovim/releases/tags/stable"
+TS_MIN_VERSION="0.26.1"                 # tree-sitter CLI, required by nvim-treesitter (main)
+TS_RELEASE_API="https://api.github.com/repos/tree-sitter/tree-sitter/releases/latest"
 SHARE_TAG="host"                        # virtiofs tag configured on the qemu side
 APT_PACKAGES=(
   sudo i3 vim tree curl wget git make unzip gcc ripgrep fd-find fzf tmux xclip luarocks
   rustup openjdk-21-jdk qemu-guest-agent spice-vdagent
-)
-REPOS=(
-  https://github.com/K-rust-y/arch_scripts.git
-  https://github.com/IsMyPhonePwned/bugreport-extractor-library.git
 )
 
 log() { printf '\n\033[1;34m==> %s\033[0m\n' "$*"; }
@@ -72,6 +70,35 @@ for a in json.load(sys.stdin)["assets"]:
   echo "Neovim $(nvim_version /usr/local/bin/nvim) installed"
 }
 
+# Debian's tree-sitter-cli is too old for nvim-treesitter: use the upstream release binary
+install_tree_sitter_cli() {
+  local cur
+  cur="$(/usr/local/bin/tree-sitter --version 2>/dev/null | awk '{print $2}')" || true  # absent on first run
+  if [[ -n $cur ]] && version_ge "$cur" "$TS_MIN_VERSION"; then
+    echo "tree-sitter CLI $cur already installed"
+    return
+  fi
+
+  log "Installing the latest tree-sitter CLI to /usr/local/bin"
+  local url digest tmp ver
+  read -r url digest < <(curl -fsSL "$TS_RELEASE_API" | python3 -c '
+import json, sys
+for a in json.load(sys.stdin)["assets"]:
+    if a["name"] == "tree-sitter-linux-x64.gz":
+        print(a["browser_download_url"], a["digest"].removeprefix("sha256:"))')
+  [[ -n $url && -n $digest ]] || die "could not find the tree-sitter release"
+  tmp="$(mktemp -d)"
+  curl -fL -o "$tmp/tree-sitter.gz" "$url"
+  echo "$digest  $tmp/tree-sitter.gz" | sha256sum -c --quiet - || die "tree-sitter checksum mismatch"
+  gunzip "$tmp/tree-sitter.gz"
+  chmod 755 "$tmp/tree-sitter"
+  ver="$("$tmp/tree-sitter" --version | awk '{print $2}')"
+  version_ge "$ver" "$TS_MIN_VERSION" || die "tree-sitter $ver is older than $TS_MIN_VERSION"
+  mv "$tmp/tree-sitter" /usr/local/bin/tree-sitter
+  rm -rf "$tmp"
+  echo "tree-sitter CLI $ver installed"
+}
+
 system_setup() {
   local user=$1 home
   home="$(getent passwd "$user" | cut -d: -f6)"
@@ -86,6 +113,7 @@ system_setup() {
   usermod -aG sudo "$user"
 
   install_neovim
+  install_tree_sitter_cli
 
   log "Configuring virtiofs share ($SHARE_TAG -> $home/host_shared)"
   install -d -o "$user" -g "$user" "$home/host_shared"
@@ -133,17 +161,6 @@ user_setup() {
   log "Setting up Rust toolchain"
   rustup default stable
   rustup component add rust-src rust-analyzer
-
-  log "Cloning repositories into ~/Repo"
-  mkdir -p "$HOME/Repo"
-  local url dir
-  for url in "${REPOS[@]}"; do
-    dir="$HOME/Repo/$(basename "$url" .git)"
-    [[ -d "$dir/.git" ]] || git clone "$url" "$dir"
-  done
-
-  log "Installing Claude Code"
-  command -v claude >/dev/null || curl -fsSL https://claude.ai/install.sh | bash
 
   log "Bootstrapping LazyVim plugins (headless)"
   nvim --headless "+Lazy! restore" +qa || echo "   (plugin restore failed: open nvim to finish)"
