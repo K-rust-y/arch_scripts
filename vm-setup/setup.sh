@@ -153,6 +153,8 @@ user_setup() {
 
 if [[ ${1:-} == --system ]]; then
   [[ $EUID -eq 0 && -n ${2:-} ]] || die "--system must be run as root with a user name"
+  # Plain `su` keeps the user PATH (no /usr/sbin: usermod, ...): set a full root PATH
+  export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   system_setup "$2"
   exit
 fi
@@ -164,7 +166,7 @@ if id -nG | grep -qw sudo; then
   sudo bash "$HERE/setup.sh" --system "$USER"
 else
   echo "You are not in the sudo group yet: enter the ROOT password."
-  su root -c "bash $(printf %q "$HERE/setup.sh") --system $(printf %q "$USER")"
+  su - root -c "bash $(printf %q "$HERE/setup.sh") --system $(printf %q "$USER")"
 fi
 
 user_setup
